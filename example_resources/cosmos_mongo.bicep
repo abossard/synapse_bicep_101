@@ -218,3 +218,6 @@ output cosmosDBCollections array = [
   collection1
   collection2
 ]
+
+output cosmosDBAccountID string = account.id
+output cosmosDBAccountName string = account.name

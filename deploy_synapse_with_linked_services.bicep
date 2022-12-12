@@ -3,8 +3,8 @@ param location string = 'westeurope'
 
 @description('Tags that should be added to all resources')
 param tags object = {
-  Environment: 'Production'
-  Application: 'PowerBIEmbedded'
+  Environment: 'Development'
+  Application: 'synapse'
 }
 
 @description('Salt')
@@ -24,24 +24,13 @@ resource rg 'Microsoft.Resources/resourceGroups@2021-01-01' = {
   tags: tags
 }
 
-module exampleKeyVault './example_resources/keyvault.bicep' = {
-  name: 'exampleKeyVault'
+
+module synapseWorkspace './synapse/workspace.bicep' = {
+  name: 'exampleSynapseWorkspace'
   scope: rg
   params: {
     location: location
     tags: tags
-  }
-}
-
-
-module cosmosDB './example_resources/cosmos_mongo.bicep' = {
-  name: 'exampleCosmosDB'
-  scope: rg
-  params: {
-    location: location
-    tags: tags
-    collection1Name: 'collection1'
-    collection2Name: 'collection2'
-    databaseName: 'database1'
+    salt: salt
   }
 }

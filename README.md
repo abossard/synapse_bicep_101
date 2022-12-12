@@ -24,7 +24,7 @@ https://learn.microsoft.com/en-us/azure/synapse-analytics/cicd/continuous-integr
 
 ## How to test it
 ```
-az deployment sub create --location westeurope --template-file main.bicep --debug -w
+az deployment sub create --location westeurope --template-file deploy_synapse_with_linked_services.bicep --debug -w
 
 ```
 

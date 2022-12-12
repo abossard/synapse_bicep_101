@@ -8,6 +8,8 @@ param tags object = {}
 @description('Salt')
 param salt string = substring(uniqueString(resourceGroup().id), 0, 4)
 
+param connectionStringsToAdd array = []
+
 resource keyVault 'Microsoft.KeyVault/vaults@2019-09-01' = {
   name: 'kv-${salt}'
   location: location
@@ -34,5 +36,14 @@ resource keyVault 'Microsoft.KeyVault/vaults@2019-09-01' = {
   }
 }
 
-output keyVault object = keyVault
+resource s 'Microsoft.KeyVault/vaults/secrets@2019-09-01' = [for accountName in connectionStringsToAdd: {
+  name: '${accountName}-Key'
+  parent: keyVault
+  properties: {
+    value: listConnectionStrings(accountName, '2022-05-15').connectionStrings[0].connectionString
+  }
+}]
+
+output keyVaultID string = keyVault.id
+output keyVaultName string = keyVault.name
 
